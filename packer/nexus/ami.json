@@ -1,0 +1,39 @@
+{
+    "variables" : {
+        "region" : "us-east-1"
+    },
+    "builders" : [
+        {
+            "type" : "amazon-ebs",
+            "profile" : "default",
+            "region" : "{{user `region`}}",
+            "instance_type" : "t2.micro",
+            "source_ami" : "ami-14c5486b",
+            "ssh_username" : "ec2-user",
+            "ami_name" : "nexus-3.12.0-01",
+            "ami_description" : "Amazon Linux Image with Nexus OSS",
+            "run_tags" : {
+                "Name" : "packer-builder-docker",
+                "Tool" : "Packer",
+                "Author" : "mlabouardy"
+            }
+        }
+    ],
+    "provisioners" : [
+        {
+            "type" : "file",
+            "source" : "./nexus.rc",
+            "destination" : "/tmp/nexus.rc"
+        },
+        {
+            "type" : "file",
+            "source" : "./repository.json",
+            "destination" : "/tmp/repository.json"
+        },
+        {
+            "type" : "shell",
+            "script" : "./setup.sh",
+            "execute_command" : "sudo -E -S sh '{{ .Path }}'"
+        }
+    ]
+}

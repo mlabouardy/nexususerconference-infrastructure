@@ -1,0 +1,105 @@
+{
+    "variables" : {
+        "region" : "us-east-1"
+    },
+    "builders" : [
+        {
+            "type" : "amazon-ebs",
+            "profile" : "default",
+            "region" : "{{user `region`}}",
+            "instance_type" : "t2.micro",
+            "source_ami" : "ami-14c5486b",
+            "ssh_username" : "ec2-user",
+            "ami_name" : "jenkins-master-2.107.2",
+            "ami_description" : "Amazon Linux Image with Jenkins Server",
+            "run_tags" : {
+                "Name" : "packer-builder-docker",
+                "Tool" : "Packer",
+                "Author" : "mlabouardy"
+            }
+        }
+    ],
+    "provisioners" : [
+        {
+            "type" : "shell",
+            "script" : "./setup.sh"
+        },
+        {
+            "type" : "file",
+            "source" : "./basic-security.groovy",
+            "destination" : "/tmp/basic-security.groovy"
+        },
+        {
+            "type" : "file",
+            "source" : "./jenkins.install.UpgradeWizard.state",
+            "destination" : "/tmp/jenkins.install.UpgradeWizard.state"
+        },
+        {
+            "type" : "file",
+            "source" : "./disable-cli.groovy",
+            "destination" : "/tmp/disable-cli.groovy"
+        },
+        {
+            "type" : "file",
+            "source" : "./csrf-protection.groovy",
+            "destination" : "/tmp/csrf-protection.groovy"
+        },
+        {
+            "type" : "file",
+            "source" : "./disable-jnlp.groovy",
+            "destination" : "/tmp/disable-jnlp.groovy"
+        },
+        {
+            "type" : "file",
+            "source" : "./jenkins",
+            "destination" : "/tmp/jenkins"
+        },
+        {
+            "type" : "file",
+            "source" : "/Users/mlabouardy/keys/personal.pem",
+            "destination" : "/tmp/id_rsa"
+        },
+        {
+            "type" : "file",
+            "source" : "./node-agent.groovy",
+            "destination" : "/tmp/node-agent.groovy"
+        },
+        {
+            "type" : "file",
+            "source" : "./plugins.txt",
+            "destination" : "/tmp/plugins.txt"
+        },
+        {
+            "type" : "file",
+            "source" : "./install-plugins.sh",
+            "destination" : "/tmp/install-plugins.sh"
+        },
+        {
+            "type" : "file",
+            "source" : "./telegraf.conf",
+            "destination" : "/tmp/telegraf.conf"
+        },
+        {
+            "type" : "shell",
+            "inline": [
+                "sudo mkdir -p /var/lib/jenkins/init.groovy.d",
+                "sudo mv /tmp/basic-security.groovy /var/lib/jenkins/init.groovy.d/basic-security.groovy",
+                "sudo mv /tmp/disable-cli.groovy /var/lib/jenkins/init.groovy.d/disable-cli.groovy",
+                "sudo mv /tmp/csrf-protection.groovy /var/lib/jenkins/init.groovy.d/csrf-protection.groovy",
+                "sudo mv /tmp/disable-jnlp.groovy /var/lib/jenkins/init.groovy.d/disable-jnlp.groovy",
+                "sudo mv /tmp/jenkins.install.UpgradeWizard.state /var/lib/jenkins/jenkins.install.UpgradeWizard.state",
+                "sudo mv /tmp/node-agent.groovy /var/lib/jenkins/init.groovy.d/node-agent.groovy",
+                "sudo chown -R jenkins:jenkins /var/lib/jenkins/jenkins.install.UpgradeWizard.state",
+                "sudo mv /tmp/telegraf.conf /etc/telegraf/telegraf.conf",
+                "sudo mv /tmp/jenkins /etc/sysconfig/jenkins",
+                "sudo mv /tmp/id_rsa /var/lib/jenkins/.ssh/id_rsa",
+                "sudo chown -R jenkins:jenkins /var/lib/jenkins/.ssh/id_rsa",
+                "sudo chmod 600 /var/lib/jenkins/.ssh/id_rsa",
+                "sudo chmod +x /tmp/install-plugins.sh",
+                "sudo bash /tmp/install-plugins.sh",
+                "sudo service jenkins start",
+                "sudo service telegraf start"
+            ]
+        }
+    ]
+}

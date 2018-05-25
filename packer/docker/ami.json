@@ -1,0 +1,48 @@
+{
+    "variables" : {
+        "region" : "us-east-1"
+    },
+    "builders" : [
+        {
+            "type" : "amazon-ebs",
+            "profile" : "default",
+            "region" : "{{user `region`}}",
+            "instance_type" : "t2.micro",
+            "source_ami" : "ami-14c5486b",
+            "ssh_username" : "ec2-user",
+            "ami_name" : "docker-17.12.1-ce",
+            "ami_description" : "Amazon Linux Image with Docker-CE",
+            "run_tags" : {
+                "Name" : "packer-builder-docker",
+                "Tool" : "Packer",
+                "Author" : "mlabouardy"
+            }
+        }
+    ],
+    "provisioners" : [
+        {
+            "type" : "shell",
+            "script" : "./setup.sh"
+        },
+        {
+            "type" : "file",
+            "source" : "./docker",
+            "destination" : "/tmp/docker"
+        },
+        {
+            "type" : "file",
+            "source" : "./telegraf.conf",
+            "destination" : "/tmp/telegraf.conf"
+        },
+        {
+            "type" : "shell",
+            "inline": [
+                "sudo mv /tmp/telegraf.conf /etc/telegraf/telegraf.conf",
+                "sudo mv /tmp/docker /etc/sysconfig/docker",
+                "sudo chmod 644 /etc/sysconfig/docker",
+                "sudo service docker restart",
+                "sudo service telegraf start"
+            ]
+        }
+    ]
+}
