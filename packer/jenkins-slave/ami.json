@@ -13,7 +13,9 @@
             "ami_name" : "jenkins-slaves",
             "ami_description" : "Amazon Linux Image for Jenkins Slave",
             "run_tags" : {
-                "Name" : "packer-builder-docker",
+                "Name" : "packer-builder-docker"
+            },
+            "tags" : {
                 "Tool" : "Packer",
                 "Author" : "mlabouardy"
             }
@@ -21,20 +23,14 @@
     ],
     "provisioners" : [
         {
-            "type" : "shell",
-            "script" : "./setup.sh"
-        },
-        {
             "type" : "file",
             "source" : "./telegraf.conf",
             "destination" : "/tmp/telegraf.conf"
         },
         {
             "type" : "shell",
-            "inline": [
-                "sudo mv /tmp/telegraf.conf /etc/telegraf/telegraf.conf",
-                "sudo service telegraf start"
-            ]
+            "script" : "./setup.sh",
+            "execute_command" : "sudo -E -S sh '{{ .Path }}'"
         }
     ]
 }

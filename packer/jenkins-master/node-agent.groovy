@@ -6,7 +6,6 @@ import com.cloudbees.plugins.credentials.impl.*
 import com.cloudbees.jenkins.plugins.sshcredentials.impl.*
 import hudson.plugins.sshslaves.*;
 
-
 println "--> creating SSH credentials"
 
 domain = Domain.global()
@@ -30,5 +29,21 @@ new BasicSSHUserPrivateKey.UsersPrivateKeySource(),
 ""
 )
 
+githubCredentials = new UsernamePasswordCredentialsImpl(
+  CredentialsScope.GLOBAL,
+  "github", "Github credentials",
+  "USERNAME",
+  "PASSWORD"
+)
+
+registryCredentials = new UsernamePasswordCredentialsImpl(
+  CredentialsScope.GLOBAL,
+  "registry", "Docker Registry credentials",
+  "USERNAME",
+  "PASSWORD"
+)
+
 store.addCredentials(domain, slavesPrivateKey)
 store.addCredentials(domain, managersPrivateKey)
+store.addCredentials(domain, githubCredentials)
+store.addCredentials(domain, registryCredentials)

@@ -13,17 +13,15 @@
             "ami_name" : "docker-17.12.1-ce",
             "ami_description" : "Amazon Linux Image with Docker-CE",
             "run_tags" : {
-                "Name" : "packer-builder-docker",
+                "Name" : "packer-builder-docker"
+            },
+            "tags" : {
                 "Tool" : "Packer",
                 "Author" : "mlabouardy"
             }
         }
     ],
     "provisioners" : [
-        {
-            "type" : "shell",
-            "script" : "./setup.sh"
-        },
         {
             "type" : "file",
             "source" : "./docker",
@@ -36,13 +34,8 @@
         },
         {
             "type" : "shell",
-            "inline": [
-                "sudo mv /tmp/telegraf.conf /etc/telegraf/telegraf.conf",
-                "sudo mv /tmp/docker /etc/sysconfig/docker",
-                "sudo chmod 644 /etc/sysconfig/docker",
-                "sudo service docker restart",
-                "sudo service telegraf start"
-            ]
+            "script" : "./setup.sh",
+            "execute_command" : "sudo -E -S sh '{{ .Path }}'"
         }
     ]
 }

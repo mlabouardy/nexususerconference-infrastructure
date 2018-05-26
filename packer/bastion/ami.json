@@ -13,7 +13,9 @@
             "ami_name" : "bastion-2018.03.0",
             "ami_description" : "Amazon Linux Image with Telegraf",
             "run_tags" : {
-                "Name" : "packer-builder-docker",
+                "Name" : "packer-builder-docker"
+            },
+            "tags" : {
                 "Tool" : "Packer",
                 "Author" : "mlabouardy"
             }

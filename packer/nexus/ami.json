@@ -13,7 +13,9 @@
             "ami_name" : "nexus-3.12.0-01",
             "ami_description" : "Amazon Linux Image with Nexus OSS",
             "run_tags" : {
-                "Name" : "packer-builder-docker",
+                "Name" : "packer-builder-docker"
+            },
+            "tags" : {
                 "Tool" : "Packer",
                 "Author" : "mlabouardy"
             }
