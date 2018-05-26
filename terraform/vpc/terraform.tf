@@ -3,7 +3,7 @@ terraform {
     encrypt = "true"
     bucket  = "terraform-state-nexus-user-conference"
     region  = "us-east-1"
-    key     = "jenkins/terraform.tfstate"
+    key     = "vpc/terraform.tfstate"
   }
 }
 

@@ -12,13 +12,12 @@ data "template_file" "user_data_slave" {
 
 // Jenkins slaves launch configuration
 resource "aws_launch_configuration" "jenkins_slave_launch_conf" {
-  name                 = "jenkins_slaves_config"
-  image_id             = "${var.jenkins_slave_image_id}"
-  instance_type        = "${var.jenkins_slave_instance_type}"
-  key_name             = "${var.key_name}"
-  security_groups      = ["${aws_security_group.jenkins_slaves_sg.id}"]
-  user_data            = "${data.template_file.user_data_slave.rendered}"
-  iam_instance_profile = "${var.jenkins_slaves_iam_role}"
+  name            = "jenkins_slaves_config"
+  image_id        = "${data.aws_ami.jenkins-slave.id}"
+  instance_type   = "${var.jenkins_slave_instance_type}"
+  key_name        = "${var.key_name}"
+  security_groups = ["${aws_security_group.jenkins_slaves_sg.id}"]
+  user_data       = "${data.template_file.user_data_slave.rendered}"
 
   root_block_device {
     volume_type           = "gp2"
