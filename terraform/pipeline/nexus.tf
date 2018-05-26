@@ -13,7 +13,7 @@ resource "aws_instance" "nexus" {
 
   tags {
     Name   = "nexus"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }

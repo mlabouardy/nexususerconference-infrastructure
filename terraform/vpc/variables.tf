@@ -1,3 +1,4 @@
+//Global variables
 variable "region" {
   description = "AWS region"
 }
@@ -10,6 +11,11 @@ variable "aws_profile" {
   description = "AWS profile"
 }
 
+variable "hosted_zone_id" {
+  description = "Route53 zone id"
+}
+
+// Default variables
 variable "vpc_name" {
   description = "VPC name"
   default     = "nexus-user-conference"
@@ -44,9 +50,4 @@ variable "bastion_instance_type" {
 variable "bastion_key_name" {
   description = "Bastion KeyName"
   default     = "personal"
-}
-
-variable "hosted_zone_id" {
-  description = "slowcoder.com route53 zone id"
-  default     = "Z2TR95QTU3UIUT"
 }

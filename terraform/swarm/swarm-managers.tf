@@ -45,7 +45,7 @@ resource "aws_autoscaling_group" "managers" {
 
   tag {
     key                 = "Author"
-    value               = "mlabouardy"
+    value               = "nexus-user-conference"
     propagate_at_launch = true
   }
 
@@ -60,4 +60,58 @@ resource "aws_autoscaling_group" "managers" {
     value               = "${var.environment}"
     propagate_at_launch = true
   }
+}
+
+// Scale out
+resource "aws_cloudwatch_metric_alarm" "high-cpu-swarm-managers-alarm" {
+  alarm_name          = "high-cpu-swarm-managers-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = "80"
+
+  dimensions {
+    AutoScalingGroupName = "${aws_autoscaling_group.managers.name}"
+  }
+
+  alarm_description = "This metric monitors ec2 cpu utilization"
+  alarm_actions     = ["${aws_autoscaling_policy.scale-out-swarm-managers.arn}"]
+}
+
+resource "aws_autoscaling_policy" "scale-out-swarm-managers" {
+  name                   = "scale-out-swarm-managers"
+  scaling_adjustment     = 1
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = 300
+  autoscaling_group_name = "${aws_autoscaling_group.managers.name}"
+}
+
+// Scale In
+resource "aws_cloudwatch_metric_alarm" "low-cpu-swarm-managers-alarm" {
+  alarm_name          = "low-cpu-swarm-managers-alarm"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = "20"
+
+  dimensions {
+    AutoScalingGroupName = "${aws_autoscaling_group.managers.name}"
+  }
+
+  alarm_description = "This metric monitors ec2 cpu utilization"
+  alarm_actions     = ["${aws_autoscaling_policy.scale-in-swarm-managers.arn}"]
+}
+
+resource "aws_autoscaling_policy" "scale-in-swarm-managers" {
+  name                   = "scale-in-swarm-managers"
+  scaling_adjustment     = -1
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = 300
+  autoscaling_group_name = "${aws_autoscaling_group.managers.name}"
 }

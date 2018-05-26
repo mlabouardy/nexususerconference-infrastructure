@@ -23,7 +23,7 @@ resource "aws_elb" "jenkins_elb" {
 
   tags {
     Name   = "jenkins_elb"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -53,7 +53,7 @@ resource "aws_elb" "nexus_elb" {
 
   tags {
     Name   = "nexus_elb"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -83,7 +83,7 @@ resource "aws_elb" "registry_elb" {
 
   tags {
     Name   = "registry_elb"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }

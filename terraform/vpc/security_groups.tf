@@ -19,7 +19,7 @@ resource "aws_security_group" "bastion_elb" {
 
   tags {
     Name   = "bastion_elb_sg_${var.vpc_name}"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -45,7 +45,7 @@ resource "aws_security_group" "bastion_host" {
 
   tags {
     Name   = "bastion_sg_${var.vpc_name}"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }

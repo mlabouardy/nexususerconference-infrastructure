@@ -5,7 +5,7 @@ resource "aws_vpc" "default" {
 
   tags {
     Name   = "${var.vpc_name}"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }

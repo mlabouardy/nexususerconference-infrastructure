@@ -19,34 +19,7 @@ resource "aws_security_group" "elb_viz_sg" {
 
   tags {
     Name        = "elb_viz_sg_${var.environment}"
-    Author      = "mlabouardy"
-    Tool        = "Terraform"
-    Environment = "${var.environment}"
-  }
-}
-
-resource "aws_security_group" "elb_demo_sg" {
-  name        = "elb_demo_sg_${var.environment}"
-  description = "Allow traffic on https"
-  vpc_id      = "${var.vpc_id}"
-
-  ingress {
-    from_port   = "443"
-    to_port     = "443"
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port   = "0"
-    to_port     = "0"
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags {
-    Name        = "elb_demo_sg_${var.environment}"
-    Author      = "mlabouardy"
+    Author      = "nexus-user-conference"
     Tool        = "Terraform"
     Environment = "${var.environment}"
   }
@@ -62,13 +35,6 @@ resource "aws_security_group" "swarm" {
     to_port         = 22
     protocol        = "tcp"
     security_groups = ["${var.bastion_sg_id}", "${var.jenkins_sg_id}"]
-  }
-
-  ingress {
-    from_port       = 3000
-    to_port         = "3000"
-    protocol        = "tcp"
-    security_groups = ["${aws_security_group.elb_demo_sg.id}"]
   }
 
   ingress {
@@ -122,7 +88,7 @@ resource "aws_security_group" "swarm" {
 
   tags {
     Name        = "swarm_sg_${var.environment}"
-    Author      = "mlabouardy"
+    Author      = "nexus-user-conference"
     Tool        = "Terraform"
     Environment = "${var.environment}"
   }

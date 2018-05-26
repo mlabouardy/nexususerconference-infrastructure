@@ -9,7 +9,7 @@ resource "aws_subnet" "public_subnets" {
 
   tags {
     Name   = "public_10.0.${count.index * 2 + 1}.0_${element(var.availability_zones, count.index)}"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -25,7 +25,7 @@ resource "aws_subnet" "private_subnets" {
 
   tags {
     Name   = "private_10.0.${count.index * 2}.0_${element(var.availability_zones, count.index)}"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -36,7 +36,7 @@ resource "aws_internet_gateway" "igw" {
 
   tags {
     Name   = "igw_${var.vpc_name}"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -47,7 +47,7 @@ resource "aws_eip" "nat" {
 
   tags {
     Name   = "eip-nat_${var.vpc_name}"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -59,7 +59,7 @@ resource "aws_nat_gateway" "nat" {
 
   tags {
     Name   = "nat_${var.vpc_name}"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -75,7 +75,7 @@ resource "aws_route_table" "public_rt" {
 
   tags {
     Name   = "public_rt_${var.vpc_name}"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -91,7 +91,7 @@ resource "aws_route_table" "private_rt" {
 
   tags {
     Name   = "private_rt_${var.vpc_name}"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }

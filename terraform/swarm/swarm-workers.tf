@@ -31,7 +31,6 @@ resource "aws_autoscaling_group" "workers" {
   vpc_zone_identifier  = "${var.vpc_private_subnets}"
   min_size             = "${var.min_workers}"
   max_size             = "${var.max_workers}"
-  load_balancers       = ["${aws_elb.swarm_demo_elb.name}"]
 
   depends_on = ["aws_autoscaling_group.managers"]
 
@@ -47,7 +46,7 @@ resource "aws_autoscaling_group" "workers" {
 
   tag {
     key                 = "Author"
-    value               = "mlabouardy"
+    value               = "nexus-user-conference"
     propagate_at_launch = true
   }
 
@@ -62,4 +61,58 @@ resource "aws_autoscaling_group" "workers" {
     value               = "${var.environment}"
     propagate_at_launch = true
   }
+}
+
+// Scale out
+resource "aws_cloudwatch_metric_alarm" "high-cpu-swarm-workers-alarm" {
+  alarm_name          = "high-cpu-swarm-workers-alarm"
+  comparison_operator = "GreaterThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = "80"
+
+  dimensions {
+    AutoScalingGroupName = "${aws_autoscaling_group.workers.name}"
+  }
+
+  alarm_description = "This metric monitors ec2 cpu utilization"
+  alarm_actions     = ["${aws_autoscaling_policy.scale-out-swarm-workers.arn}"]
+}
+
+resource "aws_autoscaling_policy" "scale-out-swarm-workers" {
+  name                   = "scale-out-swarm-workers"
+  scaling_adjustment     = 1
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = 300
+  autoscaling_group_name = "${aws_autoscaling_group.workers.name}"
+}
+
+// Scale In
+resource "aws_cloudwatch_metric_alarm" "low-cpu-swarm-workers-alarm" {
+  alarm_name          = "low-cpu-swarm-workers-alarm"
+  comparison_operator = "LessThanOrEqualToThreshold"
+  evaluation_periods  = "2"
+  metric_name         = "CPUUtilization"
+  namespace           = "AWS/EC2"
+  period              = "120"
+  statistic           = "Average"
+  threshold           = "20"
+
+  dimensions {
+    AutoScalingGroupName = "${aws_autoscaling_group.workers.name}"
+  }
+
+  alarm_description = "This metric monitors ec2 cpu utilization"
+  alarm_actions     = ["${aws_autoscaling_policy.scale-in-swarm-workers.arn}"]
+}
+
+resource "aws_autoscaling_policy" "scale-in-swarm-workers" {
+  name                   = "scale-in-swarm-workers"
+  scaling_adjustment     = -1
+  adjustment_type        = "ChangeInCapacity"
+  cooldown               = 300
+  autoscaling_group_name = "${aws_autoscaling_group.workers.name}"
 }

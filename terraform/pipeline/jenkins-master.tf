@@ -13,7 +13,7 @@ resource "aws_instance" "jenkins_master" {
 
   tags {
     Name   = "jenkins_master"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }

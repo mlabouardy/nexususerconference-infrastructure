@@ -1,6 +1,6 @@
 // Bastion host launch configuration
 resource "aws_launch_configuration" "bastion_conf" {
-  name            = "bastion_${var.vpc_name}"
+  name            = "bastion"
   image_id        = "${data.aws_ami.bastion.id}"
   instance_type   = "${var.bastion_instance_type}"
   key_name        = "${var.bastion_key_name}"
@@ -26,13 +26,13 @@ resource "aws_autoscaling_group" "bastion_asg" {
 
   tag {
     key                 = "Name"
-    value               = "bastion_${var.vpc_name}"
+    value               = "bastion"
     propagate_at_launch = true
   }
 
   tag {
     key                 = "Author"
-    value               = "mlabouardy"
+    value               = "nexus-user-conference"
     propagate_at_launch = true
   }
 

@@ -27,7 +27,7 @@ resource "aws_security_group" "jenkins_master_sg" {
 
   tags {
     Name   = "jenkins_master_sg"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -53,7 +53,7 @@ resource "aws_security_group" "jenkins_slaves_sg" {
 
   tags {
     Name   = "jenkins_slaves_sg"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -79,7 +79,7 @@ resource "aws_security_group" "elb_jenkins_sg" {
 
   tags {
     Name   = "elb_jenkins_sg"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -121,7 +121,7 @@ resource "aws_security_group" "nexus_sg" {
 
   tags {
     Name   = "nexus_sg"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -147,7 +147,7 @@ resource "aws_security_group" "elb_nexus_sg" {
 
   tags {
     Name   = "elb_nexus_sg"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
@@ -173,7 +173,7 @@ resource "aws_security_group" "elb_registry_sg" {
 
   tags {
     Name   = "elb_registry_sg"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }

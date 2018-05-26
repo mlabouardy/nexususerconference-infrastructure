@@ -21,7 +21,7 @@ resource "aws_elb" "bastion_hosts_elb" {
 
   tags {
     Name   = "bastion_elb_${var.vpc_name}"
-    Author = "mlabouardy"
+    Author = "nexus-user-conference"
     Tool   = "Terraform"
   }
 }
