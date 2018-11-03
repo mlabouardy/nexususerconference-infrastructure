@@ -59,7 +59,6 @@ variable "vpc_cidr_block" {
 
 variable "key_name" {
   description = "SSH KeyPair"
-  default     = "personal"
 }
 
 // Jenkins Master

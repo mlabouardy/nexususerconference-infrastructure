@@ -57,6 +57,7 @@ handy-uri-templates-2-api
 htmlpublisher
 jackson2-api
 javadoc
+jdk-tool
 jenkins-design-language
 jira
 jquery
@@ -92,6 +93,7 @@ scm-api
 script-security
 slack
 see-gateway
+ssh
 ssh-agent
 ssh-credentials
 ssh-slaves
